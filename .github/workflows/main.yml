@@ -1,0 +1,24 @@
+name: devops test
+on:
+  push:
+    branches: [ master ]
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        # Required, playbook filepath
+        playbook: deploy.yml
+        # Optional, directory where playbooks live
+        directory: ./
+        # Optional, SSH private key
+        key: ${{ secrets.SSH_KEY }}
+        # Optional, literal inventory file contents
+        inventory: |
+          [all]
+          3.34.198.236 ansible_sshj_user=ubuntu
+          [group1]
+          3.34.198.236 ansible_sshj_user=ubuntu
